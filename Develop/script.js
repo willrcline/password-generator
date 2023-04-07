@@ -11,15 +11,12 @@
 // ! THEN I confirm whether or not to include lowercase, uppercase, numeric, and/or special characters
 // ! WHEN I answer each prompt
 // ! THEN my input should be validated and at least one character type should be selected
-// WHEN all prompts are answered
-// THEN a password is generated that matches the selected criteria
-// WHEN the password is generated
-// THEN the password is either displayed in an alert or written to the page
+// !WHEN all prompts are answered
+// !THEN a password is generated that matches the selected criteria
+// !WHEN the password is generated
+// !THEN the password is either displayed in an alert or written to the page
 
-// Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
-
-
 
 function askLength() {
   var length = prompt("How many characters do you want your password to be? (Choose between 8 and 128)")
@@ -27,6 +24,7 @@ function askLength() {
   if (!isNaN(parsedInput) && parsedInput >= 8 && parsedInput <= 128) {
     return length
   } else {
+    alert("Invalid entry. Needs to be a number between 8 and 128.")
     askLength()
   }
 }
@@ -36,31 +34,31 @@ function askUpperCase() {
   return wantsUpperCase
 }
 
-function askNumber() {
+function askNumbers() {
   var wantsNumbers = confirm("Do you want numbers included?")
   return wantsNumbers
 }
 
-function askSpecialCharacter() {
+function askSpecialCharacters() {
   var wantsSpecialCharacters = confirm("Do you want special characters included?")
-  return wantsSpecialCharacter
+  return wantsSpecialCharacters
 }
 
-const lowerCaseletters = 'abcdefghijklmnopqrstuvwxyz';
-const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-const numbers = '0123456789'
-const specialCharacters = '!@#$%^&*()_+-=[]{}|:;"\',.<>?/`~\\'
+function combinePossibleCharacters(wantsUpperCase, wantsNumbers, wantsSpecialCharacters) {
+  const lowerCaseletters = 'abcdefghijklmnopqrstuvwxyz';
+  const upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  const numbers = '0123456789'
+  const specialCharacters = '!@#$%^&*()_+-=[]{}|:;"\',.<>?/`~\\'
 
-function combinePossibleCharacters(wantsUpperCase, wantsNumbers, wantsSpecialCharacter) {
   list = lowerCaseletters
   if (wantsUpperCase) {
     list = list.concat(upperCaseLetters)
   }
   if (wantsNumbers) {
-    list = list.concat(wantsNumbers)
+    list = list.concat(numbers)
   }
-  if (wantsSpecialCharacter) {
-    list = list.concat(wantsSpecialCharacter)
+  if (wantsSpecialCharacters) {
+    list = list.concat(specialCharacters)
   }
   return list
 }
@@ -74,6 +72,15 @@ function generatePassword(length, possibleCharacters) {
   return password
 }
 
+function getPassword() {
+  var length = askLength()
+  var wantsUpperCase = askUpperCase()
+  var wantsNumbers = askNumbers()
+  var wantsSpecialCharacters = askSpecialCharacters()
+  var possibleCharacters = combinePossibleCharacters(wantsUpperCase, wantsNumbers, wantsSpecialCharacters)
+  var password = generatePassword(length, possibleCharacters)
+  return password
+}
 
 function writePassword() {
   var password = getPassword();
@@ -83,6 +90,4 @@ function writePassword() {
 
 }
 
-
-// Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
