@@ -23,7 +23,8 @@ function askLength() {
   var parsedInput = parseInt(length, 10);
   if (!isNaN(parsedInput) && parsedInput >= 8 && parsedInput <= 128) {
     return length
-  } else {
+  }
+    else {
     alert("Invalid entry. Needs to be a number between 8 and 128.")
     askLength()
   }
